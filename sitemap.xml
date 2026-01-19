@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://samginfotech.com/</loc>
-  </url>
+
+  <url><loc>https://samginfotech.com/home/</loc></url>
+  <url><loc>https://samginfotech.com/about/</loc></url>
+  <url><loc>https://samginfotech.com/services/</loc></url>
+  <url><loc>https://samginfotech.com/ai-workflow/</loc></url>
+  <url><loc>https://samginfotech.com/process/</loc></url>
+  <url><loc>https://samginfotech.com/team/</loc></url>
+  <url><loc>https://samginfotech.com/faq/</loc></url>
+  <url><loc>https://samginfotech.com/contact/</loc></url>
+
 </urlset>
