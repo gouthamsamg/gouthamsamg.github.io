@@ -9,15 +9,18 @@
 
   <style>
     :root{
-      --brand:#0B4C76;
-      --brand2:#1A324B;
-      --light:#F4F7FB;
+      /* Logo-based palette */
+      --brand:#0B4C76;      /* primary SAMG blue */
+      --brand2:#1A324B;     /* deep navy */
+      --light:#F4F7FB;      /* light background */
       --card:#ffffff;
       --text:#0E1A2B;
       --line:rgba(12,36,62,.12);
       --shadow:0 10px 30px rgba(2,12,24,.10);
       --radius:18px;
       --max:1180px;
+
+      /* Accents */
       --accent:#2AA6FF;
       --success:#1DBFA7;
       --warn:#F4B03E;
@@ -147,7 +150,7 @@
       font-weight:900;
     }
 
-    /* SERVICES */
+    /* SERVICES (Clickable) */
     .services{display:grid;grid-template-columns: repeat(3,1fr); gap:16px}
     .service-card{
       padding:18px;
@@ -177,7 +180,7 @@
     .step h4{margin:10px 0 6px;color:var(--brand2)}
     .step p{margin:0;color:rgba(14,26,43,.72);font-size:14px}
 
-    /* TEAM */
+    /* TEAM (BIG photo, NOT cropped) */
     .team-grid{display:grid;grid-template-columns: repeat(3,1fr); gap:16px}
     .person{
       padding:18px;
@@ -247,7 +250,7 @@
     }
     .foot-grid{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
-    /* MODAL */
+    /* MODAL (Service Details) */
     .modalBack{
       position:fixed; inset:0; background: rgba(2,12,24,.55);
       display:none; align-items:center; justify-content:center;
@@ -459,7 +462,7 @@
     </div>
   </section>
 
-  <!-- SERVICES -->
+  <!-- SERVICES (CLICKABLE) -->
   <section id="services" aria-label="RCM Services">
     <div class="container">
       <div class="section-title">
@@ -596,6 +599,7 @@
       </div>
 
       <div class="team-grid">
+
         <div class="card person">
           <div>
             <h4>Goutham Gopalsamy</h4>
@@ -667,6 +671,7 @@
             <div class="initials"></div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -714,17 +719,23 @@
         <div class="card tile">
           <h4>Contact Information</h4>
           <p class="lead" style="font-size:14px;margin-top:8px">
-            Replace the email and phone below with your real contact details.
+            Reach us anytime — we’ll respond promptly.
           </p>
 
           <ul class="list" style="margin-top:14px">
             <li><span class="dot">📍</span> SAMG Infotech (Global Delivery)</li>
             <li><span class="dot">✉️</span> <a href="mailto:info@samginfotech.com">info@samginfotech.com</a></li>
-            <li><span class="dot">☎️</span> <a href="Indian tel:+917358346992">+91 73583 46992</a></li>
-            <li><span class="dot">☎️</span> <a href="International tel:+16193780498">+1 61937 80498</a></li>          </ul>
+            <li><span class="dot">🇮🇳</span> <a href="tel:+917358346992">India: +91 7358346992</a></li>
+            <li><span class="dot">🇺🇸</span> <a href="tel:+16193780498">International: +1 6193780498</a></li>
+          </ul>
+
+          <p class="mini" style="margin-top:14px">
+            Note: This form opens your email app to send the message to info@samginfotech.com.
+            (For “silent” submissions without opening email, we can connect a form service.)
+          </p>
         </div>
 
-        <form class="card" onsubmit="return handleSubmit(event)">
+        <form class="card" id="contactForm" onsubmit="return handleSubmit(event)">
           <h4 style="margin:0 0 8px;color:var(--brand2)">Request a Demo / Consultation</h4>
           <p class="mini" style="margin:0 0 10px">Fill this form and we’ll reach out shortly.</p>
 
@@ -738,7 +749,7 @@
           <input id="email" name="email" type="email" placeholder="you@company.com" required />
 
           <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" placeholder="+91 ..." />
+          <input id="phone" name="phone" type="tel" placeholder="+91 / +1 ..." />
 
           <label for="message">Message</label>
           <textarea id="message" name="message" placeholder="Tell us what you need (end-to-end RCM, denials, A/R follow-up, workflow demo, etc.)"></textarea>
@@ -797,7 +808,6 @@
       </div>
     </div>
   </div>
-
   <script>
     // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -815,12 +825,44 @@
       a.addEventListener("click", () => mobileMenu.style.display = "none");
     });
 
-    // Static form submit (demo)
+    // ✅ Form submission to info@samginfotech.com via mailto (works on GitHub Pages)
     function handleSubmit(e){
       e.preventDefault();
+
       const note = document.getElementById("formNote");
-      note.textContent = "Thanks! Your request has been captured. (Connect form to email/CRM to receive submissions.)";
-      e.target.reset();
+
+      const name = (document.getElementById("name")?.value || "").trim();
+      const company = (document.getElementById("company")?.value || "").trim();
+      const email = (document.getElementById("email")?.value || "").trim();
+      const phone = (document.getElementById("phone")?.value || "").trim();
+      const message = (document.getElementById("message")?.value || "").trim();
+
+      if (!name || !email) {
+        note.textContent = "Please fill Name and Email.";
+        return false;
+      }
+
+      const subject = `Website Inquiry - ${name}${company ? " (" + company + ")" : ""}`;
+
+      const bodyLines = [
+        "New inquiry from SAMG Infotech website",
+        "------------------------------------",
+        `Name: ${name}`,
+        `Company: ${company || "-"}`,
+        `Email: ${email}`,
+        `Phone: ${phone || "-"}`,
+        "",
+        "Message:",
+        message || "-"
+      ];
+
+      const body = bodyLines.join("\n");
+
+      const mailto = `mailto:info@samginfotech.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      note.textContent = "Opening your email app… Please click SEND to submit to info@samginfotech.com.";
+      window.location.href = mailto;
+
       return false;
     }
 
@@ -850,7 +892,7 @@
       });
     });
 
-    // Service modal content (UNCHANGED)
+    // Service modal content
     const serviceContent = {
       patientAccess: {
         title: "Patient Access",
@@ -1027,6 +1069,7 @@
       if (e.key === "Escape") closeServiceModal();
     });
 
+    // Click + keyboard access for service cards
     document.querySelectorAll(".service-card").forEach(card => {
       const key = card.getAttribute("data-service");
       card.addEventListener("click", () => openServiceModal(key));
@@ -1035,14 +1078,12 @@
       });
     });
 
-    // ✅ Auto-scroll based on URL path
+    // ✅ Auto-scroll based on URL path (so /about/ opens at About)
     function getTargetSectionIdFromPath(){
-      const p = (location.pathname || "/").replace(/^\/+|\/+$/g, ""); // trim slashes
+      const p = (location.pathname || "/").replace(/^\/+|\/+$/g, "");
       if (!p) return "home";
 
-      // If someone visits /home (without trailing slash) it still works.
       const first = p.split("/")[0].toLowerCase();
-
       const map = {
         "home": "home",
         "about": "about",
@@ -1053,7 +1094,6 @@
         "faq": "faq",
         "contact": "contact"
       };
-
       return map[first] || "home";
     }
 
@@ -1065,4 +1105,3 @@
   </script>
 </body>
 </html>
-
